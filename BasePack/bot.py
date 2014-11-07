@@ -8,11 +8,14 @@ class MyClass(object):
     '''
     classdocs
     '''
+    
+    somestr = "Some phrase"
+    
     def prn(self): 
-        a = self.GET_ACTIVE_ELEMENT
+        a = self.__class__
         print (a)
 
-prn(self)  
+    prn(somestr)  
 
     def __init__(self, params):
         '''
