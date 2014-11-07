@@ -3,19 +3,20 @@ Created on Nov 7, 2014
 
 @author: esokolyanskaya
 '''
+import random
 
 class MyClass(object):
     '''
     classdocs
     '''
-    
-    somestr = "Some phrase"
-    
-    def prn(self): 
-        a = self.__class__
-        print (a)
 
-    prn(somestr)  
+    def generator():
+        a=random.randint(10000,99999)
+        return a
+    
+    
+    mynum = generator()
+    print (mynum)
 
     def __init__(self, params):
         '''
