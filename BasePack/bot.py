@@ -2,6 +2,7 @@
 Created on Nov 7, 2014
 
 @author: esokolyanskaya
+# test commit
 '''
 import random
 
@@ -51,19 +52,21 @@ class BullsAndCows(object):
 #         print ('size of file: ' + str(len(fd)))
 #         f.close()
     
-    def genresponse(self, attempt):
+    def genresponse(self, attempt, base):
         mytry = str(attempt)
+        secret = str(base)
         bulls=0
         cows=0
         for i in range(0, len(mytry), 1):
-            if mytry[i] == self.secret[i]:
+            if mytry[i] == secret[i]:
                 bulls+=1
         for i in range(0, len(mytry), 1):
             for j in range(0, len(mytry), 1):
-                if (mytry[i]==self.secret[i] and i!=j):
+                if (mytry[i]==secret[i] and i!=j):
                     cows+=1
 #        print ("Mytry: " + mytry + " Bulls: " + str(bulls) + " Cows: " + str(cows))
         self.writefile(self.ourfile, str(bulls) + str(cows))
+        return str(bulls) + str(cows)
         
     def resultprocessing(self, result):
         print ('Result from file: ' + str(result))    
@@ -80,9 +83,10 @@ class BullsAndCows(object):
             print ('!!! Data format error: ' + line)
 #        print('last line: ' + fd[-1])
      
-    def cleanlist(self, result):
+    def cleanlist(self, result, mytry):
         for num in self.attlist:
-            if self.genresponse(num) != self.result:
+            if self.genresponse(mytry, num) != result:
+ #               print('Number to remove: ' + str(num))
                 self.attlist.remove(num)
          
 
@@ -91,13 +95,14 @@ A.secret = A.generator(A.digits)    #Generate number to guess
 print('Secret number: ' + A.secret)   #Print secret number
 A.writefile(A.ourfile, A.secret)     # Write secret to file -             to remove
 mytry = A.generator(A.digits)       #Generate first attempt
-A.result = A.genresponse(mytry)        # Generate result of first attempt
+A.result = A.genresponse(mytry, A.secret)        # Generate result of first attempt
+print ("Mytry: " + mytry + " Bulls: " + str(A.result[0]) + " Cows: " + str(A.result[1]))
 A.genattempts(A.digits)         # Generate the attempts list 
 #A.writefile(A.ourfile, A.res)
 #A.getsize(A.ourfile)    #to remove
 #A.analyze(A.ourfile, A.digits)        #Wait to duel game
 print('before cleaning: ' + str(len(A.attlist)))
-A.cleanlist(A.result)
+A.cleanlist(A.result, mytry)
 print('after cleaning: ' + str(len(A.attlist)))
 
 
