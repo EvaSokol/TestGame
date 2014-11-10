@@ -4,42 +4,52 @@ Created on Nov 7, 2014
 @author: esokolyanskaya
 '''
 import random
-from _ctypes import sizeof
 
-class MyClass(object):
-    '''
-    classdocs
-    '''
-
-    def generator():
-        a=random.randint(10000,99999)
-        b=str(a)
+class BullsAndCows():
+                    
+    def __init__(self):
+        digits = 5
+        ourfile = "text.txt"
+        mynum = self.generator(digits)
+        self.writefile(mynum, ourfile)
+        self.getsize(ourfile)
+        self.analyse(ourfile)  
+ 
+    def generator(self):
+        first = 10**(self-1)
+        last = 10**self-1
+        b=str(random.randint(first,last))
+        print(b)
         return b
-     
-    mynum = generator()
-    print (mynum)
+            
+    def writefile(self, mynum):
+        f = open(self, 'at')
+        f.write(mynum + '\n')
+        f.close()
     
-    f = open('text.txt', 'at')
-    f.write(mynum + '\n')
-    f.close()
     
-    f = open('text.txt', 'rt')
-    fd = f.readlines()
-    print ('size of file: ' + str(len(fd)))
-   
-    f.close()
-    
-    for line in fd: 
-        if len(line)-1==2: 
-            print ("result: " + line) 
-        else: 
-            print ('my guess: ' + line)
+    def getsize(self):    
+        f = open(self, 'rt')
+        fd = f.readlines()
+        print ('size of file: ' + str(len(fd)))
+        f.close()
+        
+    def analyze(self):
+        f = open(self, 'rt')
+        fd = f.readlines()
+        for line in fd: 
+            if len(line)-1==2: 
+                print ("result: " + line) 
+            else: 
+                print ('my guess: ' + line)
 
         
-   
+digits = 5
+ourfile = "text.txt"
+mynum = BullsAndCows.generator(digits)
+BullsAndCows.writefile(ourfile, mynum)
+BullsAndCows.getsize(ourfile)
+BullsAndCows.analyze(ourfile)
 
-    def __init__(self, params):
-        '''
-        Constructor
-        '''
+    
         
