@@ -67,12 +67,14 @@ class BullsAndCows(object):
         
     def resultprocessing(self, result):
         print('Result from file: ' + str(result))
-        self.result = str(result)
+        self.result = str(result[0]) + str(result[1])
         
     def analyze(self, filename, digits):
         f = open(filename, 'rt')
         fd = f.readlines()
         line = fd[-1]
+        if line == 0:
+            line = fd[-2]
         print('Last line contains: ' + str(len(line)))
         if len(line) == 2:
             self.resultprocessing(line)
@@ -127,6 +129,8 @@ class BullsAndCows(object):
             print('after cleaning: ' + str(len(self.attlist)))
         self.mytry = self.attlist[0]
         self.writefile(self.ourfile, self.mytry)
+
+ #   def test_method(self):
 
 
 A = BullsAndCows()
