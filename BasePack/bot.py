@@ -10,7 +10,7 @@ import random
 class BullsAndCows(object):
 
     def __init__(self):
-        self.digits = 5
+        self.digits = 3
         self.ourfile = "text.txt"
         self.attlist = []
         self.trycount = 0
@@ -54,17 +54,18 @@ class BullsAndCows(object):
     def genresponse(self, attempt, base):
         mytry = str(attempt)
         secret = str(base)
+        max = self.digits
         bulls = 0
         cows = 0
-        for i in range(0, len(mytry), 1):
+        for i in range(0, max, 1):
             if mytry[i] == secret[i]:
-                bulls+=1
-        for i in range(0, len(mytry), 1):
-            for j in range(0, len(mytry), 1):
-                if mytry[i] == secret[i] and i != j:
+                bulls += 1
+        for i in range(0, max, 1):
+            for j in range(0, max, 1):
+                if mytry[i] == secret[j] and i != j:
                     cows += 1
 #        print ("Mytry: " + mytry + " Bulls: " + str(bulls) + " Cows: " + str(cows))
-        self.writefile(self.ourfile,  str(cows) + str(bulls))
+        self.writefile(self.ourfile,  mytry + " cows: " + str(cows) + " bulls: " + str(bulls))
         return str(cows) + str(bulls)
         
     def resultprocessing(self, result):
@@ -82,10 +83,10 @@ class BullsAndCows(object):
             print ('!!! Data format error: ' + line)
 #        print('last line: ' + fd[-1])
      
-    def cleanlist(self, result, mytry):
+    def cleanlist(self, mytry):
+        self.writefile(self.ourfile, "Clean list: " + str(self.trycount))
         for num in self.attlist:
-            if self.genresponse(mytry, num) != result:
- #               print('Number to remove: ' + str(num))
+            if self.genresponse(mytry, num) != A.result:
                 self.attlist.remove(num)
          
 
@@ -105,9 +106,6 @@ while len(A.attlist) != 1:
     #A.getsize(A.ourfile)    #to remove
     #A.analyze(A.ourfile, A.digits)        #Wait to duel game
     print('before cleaning: ' + str(len(A.attlist)))
-    A.cleanlist(A.result, A.mytry)
+    A.cleanlist(A.mytry)
     print('after cleaning: ' + str(len(A.attlist)))
 print('You won! It\'s ' + str(A.attlist[0]))
-
-
-      
