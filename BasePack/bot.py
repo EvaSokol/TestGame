@@ -10,7 +10,7 @@ import random
 class BullsAndCows(object):
 
     def __init__(self):
-        self.digits = 3
+        self.digits = 5
         self.ourfile = "text.txt"
         self.attlist = []
         self.trycount = 0
@@ -51,21 +51,19 @@ class BullsAndCows(object):
 #         print ('size of file: ' + str(len(fd)))
 #         f.close()
     
-    def genresponse(self, attempt, base):
-        mytry = str(attempt)
-        secret = str(base)
+    def genresponse(self, att, base):
         max = self.digits
         bulls = 0
         cows = 0
-        for i in range(0, max, 1):
-            if mytry[i] == secret[i]:
+        for y in range(0, max, 1):
+            if att[y] == base[y]:
                 bulls += 1
         for i in range(0, max, 1):
             for j in range(0, max, 1):
-                if mytry[i] == secret[j] and i != j:
+                if att[i] == base[j] and i != j:
                     cows += 1
 #        print ("Mytry: " + mytry + " Bulls: " + str(bulls) + " Cows: " + str(cows))
-        self.writefile(self.ourfile,  mytry + " cows: " + str(cows) + " bulls: " + str(bulls))
+        self.writefile(self.ourfile,  att + " cows: " + str(cows) + " bulls: " + str(bulls))
         return str(cows) + str(bulls)
         
     def resultprocessing(self, result):
@@ -84,11 +82,12 @@ class BullsAndCows(object):
 #        print('last line: ' + fd[-1])
      
     def cleanlist(self, mytry):
-        self.writefile(self.ourfile, "Clean list: " + str(self.trycount))
+        toremove = []
         for num in self.attlist:
-            if self.genresponse(mytry, num) != A.result:
-                self.attlist.remove(num)
-         
+            if self.genresponse(mytry, str(num)) != A.result:
+                toremove = toremove + [num]
+        for r in toremove:
+            self.attlist.remove(r)
 
 A = BullsAndCows()    #Create class object
 A.genattempts(A.digits)         # Generate the attempts list
