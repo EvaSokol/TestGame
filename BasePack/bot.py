@@ -67,17 +67,18 @@ class BullsAndCows(object):
         
     def resultprocessing(self, result):
         print('Result from file: ' + str(result))
-        self.result = result
+        self.result = str(result)
         
     def analyze(self, filename, digits):
         f = open(filename, 'rt')
         fd = f.readlines()
         line = fd[-1]
-        if len(line)-1 == 2:
+        print('Last line contains: ' + str(len(line)))
+        if len(line) == 2:
             self.resultprocessing(line)
             return 2
-        elif len(fd[-1])-1 == digits:
-            print('Last line containes 5 digits')
+        elif len(fd[-1]) == digits:
+            print('Last line contains 5 digits')
             return 5
         else: 
             print('!!! Data format error: ' + line)
@@ -115,13 +116,15 @@ class BullsAndCows(object):
     def iguessgame(self):
         self.genattempts(self.digits)
         while len(self.attlist) != 1:
-            self.mytry = self.generator(self.digits)       #Generate first attempt
+            self.mytry = self.generator(self.digits)
             self.writefile(self.ourfile, self.mytry)
             size = self.getsize(self.ourfile)
             while size == self.getsize(self.ourfile):
-                time.sleep(3)
+                time.sleep(10)
             self.analyze(self.ourfile, self.digits)
+            print('before cleaning: ' + str(len(self.attlist)))
             self.cleanlist(self.mytry)
+            print('after cleaning: ' + str(len(self.attlist)))
         self.mytry = self.attlist[0]
         self.writefile(self.ourfile, self.mytry)
 
