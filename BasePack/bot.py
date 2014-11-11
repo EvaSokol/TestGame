@@ -5,7 +5,7 @@ Created on Nov 7, 2014
 # test commit
 '''
 import random
-
+import time
 
 class BullsAndCows(object):
 
@@ -26,7 +26,7 @@ class BullsAndCows(object):
 
     def generator(self, digits):
         a = len(self.attlist)
-        print('Lenght of list: ' + str(a))
+#        print('Lenght of list: ' + str(a))
         b = random.randint(0, a-1)
         return str(self.attlist[b])
     
@@ -45,11 +45,12 @@ class BullsAndCows(object):
         f.write(data + '\n')
         f.close()
     
-#     def getsize(self, filename):    #numbers of strings in file - maybe will be needed
-#         f = open(filename, 'rt')
-#         fd = f.readlines()
-#         print ('size of file: ' + str(len(fd)))
-#         f.close()
+    def getsize(self, filename):    #numbers of strings in file
+        f = open(filename, 'rt')
+        fd = f.readlines()
+        print ('size of file: ' + str(len(fd)))
+        f.close()
+        return len(fd)
     
     def genresponse(self, att, base):
         max = self.digits
@@ -62,25 +63,25 @@ class BullsAndCows(object):
             for j in range(0, max, 1):
                 if att[i] == base[j] and i != j:
                     cows += 1
-#        print ("Mytry: " + mytry + " Bulls: " + str(bulls) + " Cows: " + str(cows))
-        self.writefile(self.ourfile,  att + " cows: " + str(cows) + " bulls: " + str(bulls))
         return str(cows) + str(bulls)
         
     def resultprocessing(self, result):
         print('Result from file: ' + str(result))
+        self.result = result
         
     def analyze(self, filename, digits):
         f = open(filename, 'rt')
         fd = f.readlines()
         line = fd[-1]
-        if len(line)-1==2: 
+        if len(line)-1 == 2:
             self.resultprocessing(line)
-        elif len(fd[-1])-1==digits: 
-            print ('Last line containes 5 digits')
+            return 2
+        elif len(fd[-1])-1 == digits:
+            print('Last line containes 5 digits')
+            return 5
         else: 
-            print ('!!! Data format error: ' + line)
-#        print('last line: ' + fd[-1])
-     
+            print('!!! Data format error: ' + line)
+
     def cleanlist(self, mytry):
         toremove = []
         for num in self.attlist:
@@ -89,22 +90,43 @@ class BullsAndCows(object):
         for r in toremove:
             self.attlist.remove(r)
 
-A = BullsAndCows()    #Create class object
-A.genattempts(A.digits)         # Generate the attempts list
-A.secret = A.generator(A.digits)    #Generate number to guess
-print('Secret number: ' + A.secret)
-#A.writefile(A.ourfile, A.secret)     # Write secret to file -             to remove
+    def selfgame(self):
+        self.genattempts(self.digits)         # Generate the attempts list
+        self.secret = self.generator(self.digits)    #Generate number to guess
+        print('Secret number: ' + self.secret)
+        self.writefile(self.ourfile, "\n" +"New game")
+        while len(self.attlist) != 1:
+            self.mytry = self.generator(self.digits)       #Generate first attempt
+            self.writefile(self.ourfile, self.mytry)
+            self.result = self.genresponse(self.mytry, self.secret)        # Generate result of first attempt
+            self.writefile(self.ourfile, self.result)
+            self.trycount += 1
+            print('==================== Attempt number: ' + str(self.trycount))
+            print("Mytry: " + self.mytry + " Cows: " + str(self.result[0]) + " Bulls: " + str(self.result[1]))
+            #self.writefile(self.ourfile, self.res)
+            #self.getsize(self.ourfile)    #to remove
+            #self.analyze(self.ourfile, self.digits)        #Wait to duel game
+        #    print('before cleaning: ' + str(len(self.attlist)))
+            self.cleanlist(self.mytry)
+        #    print('after cleaning: ' + str(len(self.attlist)))
+        print('You won! It\'s ' + str(self.attlist[0]))
+        self.writefile(self.ourfile, 'You won! It\'s ' + str(self.attlist[0]))
 
-while len(A.attlist) != 1:
-    A.mytry = A.generator(A.digits)       #Generate first attempt
-    A.result = A.genresponse(A.mytry, A.secret)        # Generate result of first attempt
-    A.trycount += 1
-    print('==================== Attempt number: ' + str(A.trycount))
-    print("Mytry: " + A.mytry + " Cows: " + str(A.result[0]) + " Bulls: " + str(A.result[1]))
-    #A.writefile(A.ourfile, A.res)
-    #A.getsize(A.ourfile)    #to remove
-    #A.analyze(A.ourfile, A.digits)        #Wait to duel game
-    print('before cleaning: ' + str(len(A.attlist)))
-    A.cleanlist(A.mytry)
-    print('after cleaning: ' + str(len(A.attlist)))
-print('You won! It\'s ' + str(A.attlist[0]))
+    def iguessgame(self):
+        self.genattempts(self.digits)
+        while len(self.attlist) != 1:
+            self.mytry = self.generator(self.digits)       #Generate first attempt
+            self.writefile(self.ourfile, self.mytry)
+            size = self.getsize(self.ourfile)
+            while size == self.getsize(self.ourfile):
+                time.sleep(3)
+            self.analyze(self.ourfile, self.digits)
+            self.cleanlist(self.mytry)
+        self.mytry = self.attlist[0]
+        self.writefile(self.ourfile, self.mytry)
+
+
+A = BullsAndCows()
+#A.selfgame()
+A.iguessgame()
+
