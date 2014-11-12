@@ -13,6 +13,7 @@ class BullsAndCows(object):
     def __init__(self):
         self.digits = 5
         self.ourfile = "text.txt"
+#        self.ourfile = '\\\\172.23.62.87\Bulls_Cows\game.txt'
         self.attlist = []
         self.trycount = 0
         self.result = 00
@@ -133,8 +134,7 @@ class BullsAndCows(object):
         self.writefile(self.ourfile, "I won!!!")
 
     def test_file_game(self):
-#        self.get_result_from_file(self.ourfile)
-        print('Final is: ' + self.final)
+        self.get_guess_from_file(self.ourfile)
 
     def get_result_from_file(self, filename):
         f = open(filename, 'rt')
@@ -158,26 +158,34 @@ class BullsAndCows(object):
     def get_guess_from_file(self, filename):
         f = open(filename, 'rt')
         fd = f.readlines()
+        while len(fd) == 0:
+            fd = f.readlines()
         print('Length of file = ' + str(len(fd)))
-        # for one_line in fd:
-        #     print(one_line)
         last_line = fd[-1]
         if last_line[-1] == '\n':
             last_line = last_line[:-1]
         if len(last_line) == 0:
             last_line = fd[-2]
-        if len(last_line) == 2:
-            print('result in last line is ' + str(last_line))
-            self.result = str(last_line[0]) + str(last_line[1])
+        if len(last_line) == self.digits:
+            print('There is try in last line: ' + str(last_line))
+            self.mytry = []
+            for i in last_line:
+                self.mytry.append(i)
             return True
         else:
 #            print('Last line is: ' + str(last_line))
             return False
 
-    def i_generated(self, filename):
+    def i_generated(self):
         self.genattempts(self.digits)         # Generate the attempts list
         self.secret = self.generator(self.digits)    #Generate number to guess
         print('Secret number: ' + self.secret)
+        while self.mytry != self.secret:
+            while not self.get_result_from_file((self.ourfile):
+                time.sleep(10)
+            self.result = self.genresponse(self.mytry, self.secret)
+            self.writefile(self.ourfile, self.result)
+
 
 A = BullsAndCows()
 #A.selfgame()
