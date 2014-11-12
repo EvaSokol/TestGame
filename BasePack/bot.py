@@ -17,6 +17,7 @@ class BullsAndCows(object):
         self.trycount = 0
         self.result = 00
         self.mytry = 0
+        self.final = str(0) + str(5)
        
     def checkdifferent(self, number):
         for i in range(0, len(number), 1):
@@ -116,25 +117,71 @@ class BullsAndCows(object):
         print('You won! It\'s ' + str(self.attlist[0]))
         self.writefile(self.ourfile, 'You won! It\'s ' + str(self.attlist[0]))
 
-    def iguessgame(self):
+    def i_guess_game(self):
         self.genattempts(self.digits)
-        while len(self.attlist) != 1:
+#        while len(self.attlist) != 1:
+        while self.result != self.final:
             self.mytry = self.generator(self.digits)
             self.writefile(self.ourfile, self.mytry)
             size = self.getsize(self.ourfile)
-            while size == self.getsize(self.ourfile):
+            while not self.get_result_from_file(self.ourfile):
                 time.sleep(10)
-            self.analyze(self.ourfile, self.digits)
             print('before cleaning: ' + str(len(self.attlist)))
             self.cleanlist(self.mytry)
             print('after cleaning: ' + str(len(self.attlist)))
         self.mytry = self.attlist[0]
-        self.writefile(self.ourfile, self.mytry)
+        self.writefile(self.ourfile, "I won!!!")
 
- #   def test_method(self):
+    def test_file_game(self):
+#        self.get_result_from_file(self.ourfile)
+        print('Final is: ' + self.final)
 
+    def get_result_from_file(self, filename):
+        f = open(filename, 'rt')
+        fd = f.readlines()
+        print('Length of file = ' + str(len(fd)))
+        # for one_line in fd:
+        #     print(one_line)
+        last_line = fd[-1]
+        if last_line[-1] == '\n':
+            last_line = last_line[:-1]
+        if len(last_line) == 0:
+            last_line = fd[-2]
+        if len(last_line) == 2:
+            print('result in last line is ' + str(last_line))
+            self.result = str(last_line[0]) + str(last_line[1])
+            return True
+        else:
+#            print('Last line is: ' + str(last_line))
+            return False
+
+    def get_guess_from_file(self, filename):
+        f = open(filename, 'rt')
+        fd = f.readlines()
+        print('Length of file = ' + str(len(fd)))
+        # for one_line in fd:
+        #     print(one_line)
+        last_line = fd[-1]
+        if last_line[-1] == '\n':
+            last_line = last_line[:-1]
+        if len(last_line) == 0:
+            last_line = fd[-2]
+        if len(last_line) == 2:
+            print('result in last line is ' + str(last_line))
+            self.result = str(last_line[0]) + str(last_line[1])
+            return True
+        else:
+#            print('Last line is: ' + str(last_line))
+            return False
+
+    def i_generated(self, filename):
+        self.genattempts(self.digits)         # Generate the attempts list
+        self.secret = self.generator(self.digits)    #Generate number to guess
+        print('Secret number: ' + self.secret)
 
 A = BullsAndCows()
 #A.selfgame()
-A.iguessgame()
+#A.i_guess_game()
+#A.test_file_game()
+A.i_generated()
 
