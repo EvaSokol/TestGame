@@ -7,6 +7,7 @@ Created on Nov 7, 2014
 import random
 import time
 
+
 class BullsAndCows(object):
 
     def __init__(self):
