@@ -181,7 +181,7 @@ class BullsAndCows(object):
         self.secret = self.generator(self.digits)    #Generate number to guess
         print('Secret number: ' + self.secret)
         while self.mytry != self.secret:
-            while not self.get_result_from_file((self.ourfile):
+            while not self.get_result_from_file(self.ourfile):
                 time.sleep(10)
             self.result = self.genresponse(self.mytry, self.secret)
             self.writefile(self.ourfile, self.result)
