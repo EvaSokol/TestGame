@@ -11,8 +11,8 @@ import time
 class BullsAndCows(object):
     def __init__(self):
         self.digits = 5
-        self.ourfile = "text.txt"
-        # self.ourfile = '\\\\172.23.62.87\Bulls_Cows\game.txt'
+#        self.ourfile = "text.txt"
+        self.ourfile = '\\\\172.23.62.87\Bulls_Cows\game.txt'
         self.attlist = []
         self.trycount = 0
         self.result = []
@@ -160,7 +160,7 @@ class BullsAndCows(object):
     def get_guess_from_file(self, filename):
         f = open(filename, 'rt')
         fd = f.readlines()
-        while len(fd) == 0:
+        while len(fd) == 0 or len(fd[-1]) < self.digits:
             time.sleep(3)
             fd = f.readlines()
         print('Length of file = ' + str(len(fd)))
@@ -171,10 +171,10 @@ class BullsAndCows(object):
             last_line = fd[-2]
         if len(last_line) == self.digits:
             print('There is try in last line: ' + str(last_line))
-            self.mytry = []
+            self.mytry = ''
             for i in last_line:
-                self.mytry.append(i)
-            self.mytry = str(self.mytry)
+                self.mytry = self.mytry + str(i)
+#            self.mytry = str(self.mytry)
             return True
         else:
             # print('Last line is: ' + str(last_line))
@@ -184,7 +184,8 @@ class BullsAndCows(object):
         self.genattempts(self.digits)  # Generate the attempts list
         self.secret = self.generator(self.digits)  # Generate number to guess
         print('Secret number: ' + self.secret)
-        while str(self.mytry) != self.secret:
+#        while str(self.mytry) != self.secret:
+        while str(self.result) != self.final:
             while not self.get_guess_from_file(self.ourfile):
                 time.sleep(10)
                 self.get_guess_from_file(self.ourfile)
@@ -193,6 +194,7 @@ class BullsAndCows(object):
             print('result generated')
             print('result: ' + str(self.result))
             self.writefile(self.ourfile, self.result)
+        print('Final!')
 
 
 A = BullsAndCows()
