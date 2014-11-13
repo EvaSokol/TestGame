@@ -176,20 +176,20 @@ class BullsAndCows(object):
 #            print('Last line is: ' + str(last_line))
             return False
 
-    def i_generated(self):
-        self.genattempts(self.digits)         # Generate the attempts list
-        self.secret = self.generator(self.digits)    #Generate number to guess
-        print('Secret number: ' + self.secret)
-        while self.mytry != self.secret:
-            while not self.get_result_from_file((self.ourfile):
-                time.sleep(10)
-            self.result = self.genresponse(self.mytry, self.secret)
-            self.writefile(self.ourfile, self.result)
+    # def i_generated(self):
+    #     self.genattempts(self.digits)         # Generate the attempts list
+    #     self.secret = self.generator(self.digits)    #Generate number to guess
+    #     print('Secret number: ' + self.secret)
+    #     while self.mytry != self.secret:
+    #         while not self.get_result_from_file((self.ourfile):
+    #             time.sleep(10)
+    #         self.result = self.genresponse(self.mytry, self.secret)
+    #         self.writefile(self.ourfile, self.result)
 
 
 A = BullsAndCows()
-#A.selfgame()
+A.selfgame()
 #A.i_guess_game()
 #A.test_file_game()
-A.i_generated()
+#A.i_generated()
 
