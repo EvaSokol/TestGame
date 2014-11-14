@@ -198,10 +198,9 @@ class BullsAndCows(object):
             self.writefile(self.ourfile, self.result)
         print('Final!')
 
-
 A = BullsAndCows()
-# A.selfgame()
+A.selfgame()
 #A.i_guess_game()
 #A.test_file_game()
-A.i_generated()
+#A.i_generated()
 
